@@ -3,20 +3,43 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Python F2 SEA-C45's documentation!
+In this Course
 =============================================
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+
+   session1
+   session2
+   session3
+   session4
+   session5
+   session6
+   session7
+   session8
 
 
+Materials:
+----------
 
-Indices and tables
-==================
+    .. toctree::
+        :maxdepth: 2
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+        homework/index
+        supplements/index
 
+.. rst-class:: credit
+
+These materials are based on a curriculum copyrighted by Christopher Barker and Cris Ewing 2014 located at this repo.
+
+Special thanks to
+Jon Jacky and Brian Dorsey for the materials from which these were derived.
+
+These course materials have been modified, copyright 2015 by Paul Pham,
+with source code to be found at this repo.
+
+Both the original and modified curriculum are licenced under the Creative Commons Attribution-ShareAlike 4.0 International Public License.
+
+https://creativecommons.org/licenses/by-sa/4.0/legalcode
