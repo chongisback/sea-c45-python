@@ -1,5 +1,6 @@
 
 def fibonacci(n):
+    """Returns the n-th element in the Fibonacci sequence"""
     if(n == 0):
         return 0
     elif(n == 1):
@@ -9,6 +10,7 @@ def fibonacci(n):
 
 
 def lucas(n):
+    """Returns the n-th element in the Lucas sequence"""
     if(n == 0):
         return 2
     elif(n == 1):
