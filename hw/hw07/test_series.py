@@ -13,10 +13,12 @@ import series
 
 
 def test_fibonacci():
+    # 1 point for passing the four tests below
     assert(series.fibonacci(0) == 0)
     assert(series.fibonacci(1) == 1)
     assert(series.fibonacci(2) == 1)
     assert(series.fibonacci(3) == 2)
+    # 1 point for passing the four tests below
     assert(series.fibonacci(4) == 3)
     assert(series.fibonacci(5) == 5)
     assert(series.fibonacci(6) == 8)
@@ -24,10 +26,12 @@ def test_fibonacci():
 
 
 def test_lucas():
+    # 1 point for passing the four tests below
     assert(series.lucas(0) == 2)
     assert(series.lucas(1) == 1)
     assert(series.lucas(2) == 3)
     assert(series.lucas(3) == 4)
+    # 1 point for passing four tests below
     assert(series.lucas(4) == 7)
     assert(series.lucas(5) == 11)
     assert(series.lucas(6) == 18)
@@ -35,13 +39,13 @@ def test_lucas():
 
 
 def test_sum_series():
+    # 1 point for passing the four tests below
     assert(series.sum_series(0, 10, 20) == 10)
     assert(series.sum_series(1, 10, 20) == 20)
     assert(series.sum_series(2, 10, 20) == 30)
     assert(series.sum_series(3, 10, 20) == 50)
+    # 1 point for passing the four tests below
     assert(series.sum_series(4, 10, 20) == 80)
     assert(series.sum_series(5, 10, 20) == 130)
     assert(series.sum_series(6, 10, 20) == 210)
     assert(series.sum_series(7, 10, 20) == 340)
-
-
