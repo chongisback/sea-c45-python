@@ -3,7 +3,7 @@ donors = []
 
 
 def menu():
-    os.system('clear')
+    global donors
     choice = input("\n\
 Choose from the following: \n\
 T - Send a (T)hank you \n\
@@ -25,6 +25,7 @@ def thank_you_name():
     a name to send a thank you letter. When a name is entered it will
     ask for donation and prints a letter."""
     global donors
+
     while True:
         os.system('clear')
         name = input(u"\n\
@@ -40,7 +41,8 @@ quit - Return to main menu \n\
             os.system('clear')
             print("List of Names")
             print("-------------")
-            for donor in donors:
+            sorted_name = sort_by_name()
+            for donor in sorted_name:
                 print(donor[0])
             input(u"\nPress enter to continue...")
         elif(name.replace(' ', '').isalpha()):
@@ -68,6 +70,7 @@ def add_donation(index):
         if(amount == 'quit'):
             return amount
         elif(is_number(amount)):
+            # amount is rounded to 2 decimal place
             amount = float("{0:.2f}".format(float(amount)))
             donors[index][1] += amount
             donors[index][2] += 1
@@ -82,7 +85,7 @@ def create_a_letter(name, donation):
     print(u"\n\
 Dear %s, \n\
 \n\
-    Thank you so much for your kind donation of $%s. We here at the\n\
+    Thank you so much for your kind donation of $%.2f. We here at the\n\
 Foundation for Everyone Needs Potato Salad greatly appreciate it. You \n\
 money will go towards researching the best way for everyone in the world\n\
 to enjoy potato salad.\n\
@@ -91,72 +94,146 @@ Thanks again,\n\
 \n\
 Chong Park\n\
 \n\
-Director, Foundation for Everyone Needs Potato Salad" % (name, donation))
-    input(u"Press enter to continue...")
+Director, Foundation for Everyone Needs Potato Salad\n\n\n" % (name, donation))
 
 
 def contains_index(name):
     """
     Returns True, and index, if name is contained in the donors list.
-    Returns False if name is not contained in the donors list
+    Returns False, and last index if name is not contained in the donors list
     """
     global donors
     contains = False
-    index = -1
+    index = 0
     for donor in donors:
-        index += 1
-        print (donor[0])
-        print (name)
         if(donor[0] == name):
             contains = True
+            break
+        index += 1
     print([contains, index])
     return [contains, index]
 
-"""
-def alpha_add(name):
-    # Alphabetically add to the list:
-    # If donors list is empty, index is 0
-    # If donors 0th name is greater than new name, index is 0
-    # If donors last name is less than new name, index is len(donor)
-    #    which is 1 spot greater than the last index of the list
-    # If none of this apply, it will find a spot inbetween two names
-    global donors
-    if(len(donors) == 0):
-        sort_i = 0
-    elif(donors[0][0] > name):
-        sort_i = 0
-    elif(donors[-1][0] < name):
-        sort_i = len(donors)
-    else:
-        i = 0
-        while(i < len(donors)):
-            if(donors[i][0] < name and donors[i + 1][0] > name):
-                sort_i = i + 1
-                break
-            i += 1
-    donors.insert(sort_i, [name, 0, 0])
-    return sort_i
-"""
-
 
 def create_report():
-    tablelist = create_list_for_table()
-    tabletopics = ["Name", "Total", "#", "Average Donation"]
-    tableheader = "\t|".join(tabletopics)
-    print (tableheader)
-    print("-----------------------------------------------------")
-    for items in tablelist:
-        print(items)
-    # prompt_for_enter
-    input("Press enter to continue...")
-
-
-def create_list_for_table():
+    """
+    Executed when R is pressed in the main menu.
+    It creates a report in table format.
+    Items on the columns are joined by tabs to create a tabular
+    table. The tab-ing is determined by the length of variable in the
+    column.
+    Format follows:
+    Name            |Total           |#       |Average Donation
+    -----------------------------------------------------------
+    1234567890123456|1234567890123456|12345678|12345....
+    Example Name    |1000.00         |2       |500.00
+    where number is how many spaces are in each column
+    """
+    os.system('clear')
     global donors
+    # Using variable tab and tab2 as tabs for spacing
+    tab = "\t|"
+    tab2 = "\t\t|"
+    s_l = sort_by_donation()
+    # newlist will hold the string values for each row of donor information
     newlist = []
-    for row_items in donors:
-        newlist.append("\t|".join([row_items[0], str(row_items[1]), str(row_items[2])]))
-    return newlist
+    for x in s_l:
+        # avg is calculated by total donation / # of donation
+        # it will get float with 2 decimal values
+        avg = '%.2f' % (float(x[1]) / x[2])
+        # row holds list of each items of donor info.
+        # row = [name, total, # donation, avg]
+        row = [x[0], '%.2f' % x[1], str(x[2]), str(avg)]
+        # Below is tabbing for correct tab space depends on length of the name
+        # or donation amount. Max char per name and total donation
+        # is 16. It will only account for that much tabbing at the moment
+        if(len(row[0]) > 7):
+            r_i = [(tab).join(row[:2]), (tab).join(row[2:])]
+        else:
+            r_i = [(tab2).join(row[:2]), (tab).join(row[2:])]
+        if(len(row[1]) >= 7):
+            row_items = (tab).join(r_i)
+        else:
+            row_items = (tab2).join(r_i)
+        newlist.append(row_items)
+    col = ["Name", "Total", "#", "Average Donation"]
+    subtopic = [(tab2).join(col[:2]), (tab).join(col[2:])]
+    columns = (tab2).join(subtopic)
+    print(columns)
+    print("-----------------------------------------------------------")
+    for items in newlist:
+        print(items)
+    print("\n\n\n")
+
+
+def sort_by_donation():
+    """
+    Sorts donors list to a new list in order of most to least donation
+    This sorting algorithm uses insertion method.
+    """
+    global donors
+    # s_l is short hand for sorted_list
+    # d is short hand for single donor in donors
+    # s_i is short hand for sorted index
+    s_l = []
+    for d in donors:
+        # d is short hand for sorted_list
+        if(len(s_l) == 0):
+            sorted_i = 0
+        else:
+            # current d's total donation is greater than the 1st value in
+            # sorted_list's total donation
+            if(d[1] >= s_l[0][1]):
+                sorted_i = 0
+            # current d's total donation is less than the last value in
+            # sorted_list's total donation
+            elif(d[1] < s_l[-1][1]):
+                sorted_i = len(s_l)
+            # otherwise, look for index where d's total donation can squeen
+            # in between
+            else:
+                i = 0
+                while (i < len(s_l) - 1):
+                    if(s_l[i][1] <= d[1] and s_l[i + 1][1] > d[1]):
+                        sorted_i = i + 1
+                        break
+                    i += 1
+        s_l.insert(sorted_i, d)
+    return s_l
+
+
+def sort_by_name():
+    """
+    Sorts donors list to a new list in alphabetical order of the name
+    This sorting algorithm uses insertion method.
+    """
+    # s_l is short hand for sorted_list
+    # d is short hand for single donor in donors
+    # s_i is short hand for sorted index
+    global donors
+    s_l = []
+    for d in donors:
+        if(len(s_l) == 0):
+            sorted_i = 0
+        else:
+            # current d's name is less than the 1st value in
+            # sorted_list's name
+            if(d[0] < s_l[0][0]):
+                sorted_i = 0
+            # current d's name is bigger than the last value in
+            # sorted_list's name
+            elif(d[0] > s_l[-1][0]):
+                sorted_i = len(s_l)
+            # otherwise, look for index where d's name can squeeze
+            # in between
+            else:
+                i = 0
+                while(i < len(s_l) - 1):
+                    if(s_l[i][0] < d[0] and s_l[i + 1][0] > d[0]):
+                        sorted_i = i + 1
+                        break
+                    i += 1
+        s_l.insert(sorted_i, d)
+    return s_l
 
 
 def is_number(n):
