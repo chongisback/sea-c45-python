@@ -26,7 +26,6 @@ def thank_you_name():
     a name to send a thank you letter. When a name is entered it will
     ask for donation and prints a letter."""
     global donors
-
     while True:
         os.system('clear')
         name = input(u"\n\
@@ -50,13 +49,16 @@ quit - Return to main menu \n\
             break
     # If the loop breaks, name is neither 'quit' or 'list'
     name = name.title()
+    # Uses name to check for contain boolean and uses it with index
     contains_and_index = contains_index(name)
     contains, index = contains_and_index[0], contains_and_index[1]
     if(not contains):
         donors.append([name, 0, 0])
+    # Add donation
     donation = add_donation(index)
     if(donation == 'quit'):
         return
+    # Print a letter
     create_a_letter(name, donation)
 
 
@@ -96,6 +98,8 @@ Thanks again,\n\
 Chong Park\n\
 \n\
 Director, Foundation for Everyone Needs Potato Salad\n\n\n" % (name, donation))
+    # Exception check for quitting after printing the letter
+    # This was added to pass the test_mailroom.py
     exception = input("Please Enter to continue....")
     if(exception == 'quit'):
         quit()
@@ -159,6 +163,7 @@ def create_report():
         else:
             row_items = (tab2).join(r_i)
         newlist.append(row_items)
+
     col = ["Name", "Total", "#", "Average Donation"]
     subtopic = [(tab2).join(col[:2]), (tab).join(col[2:])]
     columns = (tab2).join(subtopic)
@@ -167,6 +172,8 @@ def create_report():
     for items in newlist:
         print(items)
     print("\n\n\n")
+    # Exception check for quitting after printing the letter
+    # This was added to pass the test_mailroom.py
     exception = input("Please Enter to continue....")
     if(exception == 'quit'):
         quit()
