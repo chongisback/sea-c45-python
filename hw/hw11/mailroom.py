@@ -4,6 +4,7 @@ donors = []
 
 def menu():
     global donors
+    os.system('clear')
     choice = input("\n\
 Choose from the following: \n\
 T - Send a (T)hank you \n\
@@ -95,6 +96,9 @@ Thanks again,\n\
 Chong Park\n\
 \n\
 Director, Foundation for Everyone Needs Potato Salad\n\n\n" % (name, donation))
+    exception = input("Please Enter to continue....")
+    if(exception == 'quit'):
+        quit()
 
 
 def contains_index(name):
@@ -163,6 +167,9 @@ def create_report():
     for items in newlist:
         print(items)
     print("\n\n\n")
+    exception = input("Please Enter to continue....")
+    if(exception == 'quit'):
+        quit()
 
 
 def sort_by_donation():
