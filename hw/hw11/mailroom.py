@@ -100,7 +100,7 @@ Chong Park\n\
 Director, Foundation for Everyone Needs Potato Salad\n\n\n" % (name, donation))
     # Exception check for quitting after printing the letter
     # This was added to pass the test_mailroom.py
-    exception = input("Please Enter to continue....")
+    exception = input("Press Enter to continue....")
     if(exception == 'quit'):
         quit()
 
@@ -174,7 +174,7 @@ def create_report():
     print("\n\n\n")
     # Exception check for quitting after printing the letter
     # This was added to pass the test_mailroom.py
-    exception = input("Please Enter to continue....")
+    exception = input("Press Enter to continue....")
     if(exception == 'quit'):
         quit()
 
