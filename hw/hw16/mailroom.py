@@ -1,11 +1,14 @@
 import os
-donors = []
 name_d = {}
 
 MAIN_MENU = u"\n\
 Choose from the following: \n\
 T - Send a (T)hank you \n\
 R - Create a (R)eport \n\
+S - (S)ave current donor memory to a file \n\
+O - (O)pen a previously saved file \n\
+A - (A)dd donors from other file \n\
+P - (P)rint letters for current total donation per donor \n\
 quit - Quit the program \n\
 > "
 
@@ -13,6 +16,20 @@ THANKS_MENU = u"\n\
 Please enter a name or choose from the following: \n\
 list - Print a list of previous donors\n\
 quit - Return to main menu \n\
+> "
+
+PRINT_MENU = u"\n\
+Choose from the following to print total donation for donors: \n\
+A - Print (A)ll thank you letters\n\
+C - (C)hoose thank you letter by entering the name\n\
+quit - Return to main menu\n\
+> "
+
+PRINT_MENU2 = u"\n\
+Choose from the following to print all donors' donations: \n\
+A - Print (A)ll thank you letters in one file\n\
+S - Print all thank you letters in (S)eparate file\n\
+quit - Return to main menu\n\
 > "
 
 LETTER = u"\n\
@@ -29,31 +46,118 @@ Chong Park\n\
 \n\
 Director, Foundation for Everyone Needs Potato Salad\n\n\n"
 
+FILE_WRITE = u"\nYour file has been saved to '%s'... \n\
+Would you like to clear the memory of donors(Y/N)?\n\
+>"
+
+CONTINUE = u"\nPress enter to continue..."
+
 
 def menu():
-    global donors
     os.system('clear')
     choice = input(MAIN_MENU)
     if(choice == 'T' or choice == 't'):
         thank_you_name()
     elif(choice == 'R' or choice == 'r'):
         create_report()
+    elif(choice == 'S' or choice == 's'):
+        write_file("dict")
+    elif(choice == 'O' or choice == 'o'):
+        read_file(False)
+    elif(choice == 'A' or choice == 'a'):
+        read_file(True)
+    elif(choice == 'P' or choice == 'p'):
+        print_letters()
     elif(choice == 'quit'):
         quit()
 
 
-def thank_you_name():
-    """Executed when 'T' is used in the menu function.
-    This function prompts user for a name in which user can provide
-    quit command to go back to the main menu, list all the donors, or
-    a name to send a thank you letter. When a name is entered it will
-    ask for donation and prints a letter."""
-    global donors
+def read_file(add_to):
+    """
+    Reads file and uploads dictionary from the file.
+    """
+    global name_d
+    os.system('clear')
+    file_name = input(u"Please enter a file name you would like to open > ")
+    try:
+        f = open('%s' % file_name, 'r')
+    except IOError:
+        print(u"\nFile doesn't exist")
+        input(CONTINUE)
+        return
+    lines = f.readlines()
+    test = lines.pop(0).replace('\n', '')
+    # Validates if the file has a header of MAILROOM_file_name
+    validation = (test == "MAILROOM_%s" % file_name)
+    if(validation is False):
+        print(u"\nThe file header does not match file for this program.")
+        print(u"The file is not a previously saved session.")
+        input(CONTINUE)
+        return
+    else:
+        # If user had selected the regular open file, it will clear the dict
+        # However, if the user chooses to add, it will keep the current dict
+        #   and add information from the files.
+        if(add_to is False):
+            name_d = {}
+        for l in lines:
+            name = ""
+            d = []
+            items = l.split()
+            for item in items:
+                # If there are multiple string because user could have
+                # entered first and last, or first, middle and last name
+                # It will go through and add them into 'name'
+                if(item.isalpha()):
+                    name += item
+                elif(is_number(item)):
+                    d.append(float(item))
+                elif(item.isnumeric()):
+                    d.append(int(item))
+            if(name in name_d.keys()):
+                name_d[name][0] += d[0]
+                name_d[name][1] += d[1]
+            else:
+                name_d[name] = d
+
+
+def write_file(file_type, text=""):
+    """
+    Writes strings into a file.
+    Parameter=('letter', string_of_letter) will write file of string_of_letter
+    Parameter=('dict') will write a file with donor/donation info
+    """
+    global name_d
+    os.system('clear')
+    file_name = input(u"Please enter a file name you would like to save to > ")
+    f = open('%s' % file_name, 'w')
+    # This will be validator for opening file. It will look for the header
+    #   in the format of MAILROOM_file_name
+    if(file_type == 'dict'):
+        f.write('MAILROOM_%s\n' % file_name)
+        for key in name_d.keys():
+            row = [key, str(name_d[key][0]), str(name_d[key][1])]
+            f.write('%s\n' % ' '.join(row))
+        f.close()
+        # This asks user if they want to clear the dictionary or keep it
+        clear = input(FILE_WRITE % file_name)
+        if(clear == 'Y' or clear == 'y'):
+            name_d = {}
+    elif(file_type == 'letter'):
+        f.write(text)
+        f.close()
+
+
+def thank_you_menu():
+    """
+    This function prompts user for a name, which it validates and
+    returns in .title() format.
+    """
     while True:
         os.system('clear')
         name = input(THANKS_MENU)
         if(name == 'quit'):
-            return
+            return 'quit'
         # If name is 'list' loop does not break nor return
         # to the main menu
         elif(name == 'list'):
@@ -63,24 +167,36 @@ def thank_you_name():
             sorted_name = sort_by_name()
             for donor in sorted_name:
                 print(donor)
-            input(u"\nPress enter to continue...")
+            input(CONTINUE)
         elif(name.replace(' ', '').isalpha()):
             break
-    # If the loop breaks, name is neither 'quit' or 'list'
-    name = name.title()
+    return name.title()
+
+
+def thank_you_name():
+    """
+    Executed when 'T' is entered from main menu.
+    Gets a name from thank_you_menu() and it uses it
+    to see if it needs to quit, or proceed with adding into dictionary
+    or add donation to existing values
+    """
+    global name_d
+    name = thank_you_menu()
+    if(name == 'quit'):
+        return
     # Dictionary version
     if(name not in name_d.keys()):
         name_d[name] = [0, 0]
-    donation = add_donation_d(name)
+    donation = add_donation(name)
     if(donation == 'quit'):
         return
     # Print a letter
     create_a_letter(name, donation)
 
 
-def add_donation_d(name):
+def add_donation(name):
     os.system('clear')
-    global donors
+    global name_d
     while True:
         amount = input(u"\nPlease enter the donation amount or 'quit': ")
         if(amount == 'quit'):
@@ -98,37 +214,67 @@ def create_a_letter(name, donation):
     This function prints a "Thank you" letter
     """
     os.system('clear')
-    print(LETTER % (name, donation))
+    letter = LETTER % (name, donation)
+    print(letter)
     # Exception check for quitting after printing the letter
     # This was added to pass the test_mailroom.py
-    exception = input("Press Enter to continue....")
+    exception = input(CONTINUE)
     if(exception == 'quit'):
         quit()
+    return letter
 
 
-def contains_index(name):
+def print_letters():
     """
-    Returns True, and index, if name is contained in the donors list.
-    Returns False, and last index if name is not contained in the donors list
+    Finds the paramter needed to write a file
+    The parameter sends the type of file it will be writing which is "letter"
+    and the letter itself to write.
+    Choice A)
+    Determines whether if letters for every donor should be printed and
+        attempt to write to a file. Within sub menu, you can choose to print
+        one by one, or all in one file.
+    Choice C)
+    Asks user for a name. Prints a letter and attempt to write to a file
     """
-    global donors
-    contains = False
-    index = 0
-    for donor in donors:
-        if(donor[0] == name):
-            contains = True
-            break
-        index += 1
-    print([contains, index])
-    return [contains, index]
+    global name_d
+    letter_to_write = ""
+    while(True):
+        os.system('clear')
+        choice = input(PRINT_MENU)
+        if(choice == 'A' or choice == 'a'):
+            os.system('clear')
+            choice2 = input(PRINT_MENU2)
+            if(choice2 == 'A' or choice == 'a'):
+                for key in name_d.keys():
+                    letter_to_write += create_a_letter(key, name_d[key][0])
+                write_file('letter', letter_to_write)
+                return
+            elif(choice2 == 'S' or choice2 == 's'):
+                for key in name_d.keys():
+                    letter_to_write = create_a_letter(key, name_d[key][0])
+                    write_file('letter', letter_to_write)
+                return
+            elif(choice2 == 'quit'):
+                return
+        elif(choice == 'C' or choice == 'c'):
+            key = thank_you_menu()
+            if(key == 'quit'):
+                return
+            letter_to_write = create_a_letter(key, name_d[key][0])
+            write_file('letter', letter_to_write)
+            return
+        elif(choice == 'quit'):
+            return
 
 
 def create_report():
+    """
+    Creates report with a table
+    """
     os.system('clear')
     global name_d
     sp = column_length()
     s_n = sort_by_donation()
-    print (s_n)
     # newlist will hold the string values for each row of donor information
     newlist = []
     for x in s_n:
@@ -145,7 +291,7 @@ def create_report():
         row_items = ' | '.join(row_i)
         newlist.append(row_items)
 
-    col = ["Name", "Total", "#", "Average Donation"]
+    col = ['Name', 'Total', '#', 'Average Donation']
     c = [sp[s].format(x) for (s, x) in enumerate(col)]
     columns = ' | '.join(c)
     print(columns)
@@ -155,7 +301,7 @@ def create_report():
     print("\n\n\n")
     # Exception check for quitting after printing the letter
     # This was added to pass the test_mailroom.py
-    exception = input("Press Enter to continue....")
+    exception = input(CONTINUE)
     if(exception == 'quit'):
         quit()
 
@@ -166,6 +312,14 @@ def column_length():
     max number of characters for each characters. It will resize
     the column to fit any data.
     """
+    # a is for name length
+    # b is for total donation length which should add 2 for '$' and '.'
+    # c is for number of donation
+    # d or (b - c + 1) is maximum donation length if divided by smallest
+    #   possible c.
+    #   IE. 10000/10 = 1000 -> 5 - 2 + 1 = 4
+    #   IE. 10000/99 = ~100 -> 5 - 2 + 1 = 4 will still space by 4 and have
+    #   extra space, but will not be less space
     global name_d
     a, b, c = 0, 0, 0
     for name in name_d.keys():
@@ -182,9 +336,13 @@ def column_length():
         b = 5
     if(c < 1):
         c = 1
+    d = b - c + 1
+    if(d < 17):
+        d = 17
+
     # Ran past the 80 character limit. Added lists together
     spaces = ['{:<%s}' % a, '{:>%s}' % (b + 2)]
-    spaces += ['{:>%s}' % c, '{:^%s}' % (b - c + 1)]
+    spaces += ['{:>%s}' % c, '{:^%s}' % d]
     return spaces
 
 
@@ -272,6 +430,6 @@ def is_number(n):
     except ValueError:
         return False
 
-print("Welcome to Mailroom Madness")
+print('Welcome to Mailroom Madness')
 while True:
     menu()
