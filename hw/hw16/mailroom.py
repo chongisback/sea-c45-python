@@ -80,6 +80,8 @@ def read_file(add_to):
     os.system('clear')
     file_name = input(u"Please enter a file name you would like to open > ")
     try:
+        if(file_name == 'quit'):
+            return
         f = open('%s' % file_name, 'r')
     except IOError:
         print(u"\nFile doesn't exist")
@@ -130,6 +132,8 @@ def write_file(file_type, text=""):
     global name_d
     os.system('clear')
     file_name = input(u"Please enter a file name you would like to save to > ")
+    if(file_name == 'quit'):
+            return
     f = open('%s' % file_name, 'w')
     # This will be validator for opening file. It will look for the header
     #   in the format of MAILROOM_file_name
@@ -275,6 +279,7 @@ def create_report():
     global name_d
     sp = column_length()
     s_n = sort_by_donation()
+    border = sp.pop(4) + 9
     # newlist will hold the string values for each row of donor information
     newlist = []
     for x in s_n:
@@ -295,7 +300,7 @@ def create_report():
     c = [sp[s].format(x) for (s, x) in enumerate(col)]
     columns = ' | '.join(c)
     print(columns)
-    print("-----------------------------------------------------------")
+    print("-" * border)
     for items in newlist:
         print(items)
     print("\n\n\n")
@@ -316,6 +321,7 @@ def column_length():
     # b is for total donation length which should add 2 for '$' and '.'
     # c is for number of donation
     # d or (b - c + 1) is maximum donation length if divided by smallest
+    # e returns total spacing of a through d
     #   possible c.
     #   IE. 10000/10 = 1000 -> 5 - 2 + 1 = 4
     #   IE. 10000/99 = ~100 -> 5 - 2 + 1 = 4 will still space by 4 and have
@@ -339,10 +345,10 @@ def column_length():
     d = b - c + 1
     if(d < 17):
         d = 17
-
+    e = a + b + c + d
     # Ran past the 80 character limit. Added lists together
     spaces = ['{:<%s}' % a, '{:>%s}' % (b + 2)]
-    spaces += ['{:>%s}' % c, '{:^%s}' % d]
+    spaces += ['{:>%s}' % c, '{:^%s}' % d, e]
     return spaces
 
 
