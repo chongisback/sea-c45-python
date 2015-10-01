@@ -36,6 +36,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    'sphinx.ext.intersphinx',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
 ]
@@ -132,7 +133,7 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+html_logo = "_static/cf_logo.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -272,6 +273,53 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 
+# -- Hieroglyph Slide Configuration ------------
+
+extensions += [
+    'hieroglyph',
+]
+
+slide_title = "Foundations 2: Python"
+slide_theme = 'slides2'
+slide_levels = 3
+
+# Place custom static assets in the _static directory and uncomment
+# the following lines to include them
+
+slide_theme_options = {
+    'subtitle': 'Fundamentals of Python Programming',
+    'custom_css': 'custom.css',
+    # 'custom_js': 'custom.js',
+    'presenters': [
+        # {
+        #     'name': u'Christopher Barker',
+        #     'email': u'PythonCHB@gmail.com',
+        #     'github': u'https://github.com/PythonCHB',
+        #     'company': u''
+        # },
+        # {
+        #     'name': u'Dan Hable',
+        #     'email': u'dhable@gmail.com',
+        #     'github': u'http://github.com/dhable',
+        #     'company': u''
+        # },
+        #{
+        #    'name': 'Cris Ewing',
+        #    'twitter': '@crisewing',
+        #    'www': 'http://crisewing.com',
+        #    'github': 'http://github.com/cewing',
+        #    'company': 'Cris Ewing, Developer LLC'
+        #},
+        {
+            'name': 'Paul Pham',
+            'twitter': '@cryptogoth',
+            'github': 'http://github.com/ppham',
+        },
+    ]
+}
+
+# ----------------------------------------------
+
 
 # -- Options for Epub output ----------------------------------------------
 
@@ -341,3 +389,6 @@ epub_exclude_files = ['search.html']
 
 # If false, no index is generated.
 #epub_use_index = True
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {'http://docs.python.org/': None}
