@@ -33,9 +33,9 @@ quit - Return to main menu\n\
 > "
 
 LETTER = u"\n\
-Dear %s, \n\
+Dear {name}, \n\
 \n\
-    Thank you so much for your kind donation of $%.2f. We here at the\n\
+    Thank you so much for your kind donation of ${donation}. We here at the\n\
 Foundation for Everyone Needs Potato Salad greatly appreciate it. You \n\
 money will go towards researching the best way for everyone in the world\n\
 to enjoy potato salad.\n\
@@ -218,7 +218,7 @@ def create_a_letter(name, donation):
     This function prints a "Thank you" letter
     """
     os.system('clear')
-    letter = LETTER % (name, donation)
+    letter = LETTER.format(name=name, donation=donation)
     print(letter)
     # Exception check for quitting after printing the letter
     # This was added to pass the test_mailroom.py
