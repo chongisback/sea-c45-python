@@ -90,5 +90,6 @@ class Title(Element):
         ind = ind * num
         print(ind, self.tag)
         f.write("\n{ind}<{tag}>{text}</{tag}>".format(ind=ind,
-            tag=self.tag, text=self.content[0]))
+                                                      tag=self.tag,
+                                                      text=self.content[0]))
         print(ind, self.tag)
