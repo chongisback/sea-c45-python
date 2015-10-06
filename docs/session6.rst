@@ -29,9 +29,6 @@ Homework review
 
 http://stackoverflow.com/questions/404795/lbyl-vs-eafp-in-java
 
-* Line Indentations
-
-* 
 
 Other Homework Questions?
 
@@ -326,7 +323,7 @@ created.
 
     It gets the arguments passed when you *call* the class object:
 
-    .. code-block:: python  
+    .. code-block:: python
 
         Point(x, y)
 
@@ -381,10 +378,10 @@ Anything assigned in the class scope is a class attribute
     Note: the methods defined by ``def`` are class attributes as well.
 
     .. container::
-    
+
         The class is one namespace, the instance is another.
 
-        .. code-block:: python  
+        .. code-block:: python
 
             class Point(object):
                 size = 4
@@ -405,7 +402,7 @@ Typical methods:
 .. rst-class:: build
 .. container::
 
-    .. code-block:: python  
+    .. code-block:: python
 
         class Circle(object):
             color = "red"
@@ -616,7 +613,7 @@ More subclassing
 
 You can also call the superclass' other methods:
 
-.. code-block:: python  
+.. code-block:: python
 
     class Circle(object):
     ...
