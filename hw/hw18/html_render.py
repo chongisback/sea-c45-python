@@ -11,8 +11,8 @@ Python class example.
 
 class Element(object):
 
-    def __init__(self, content=None):
-        self.tag = ""
+    def __init__(self, tag="", content=None):
+        self.tag = tag
         self.content = []
         if(content is not None):
             self.content.append(content)
@@ -32,7 +32,7 @@ class Element(object):
         f.write("\n{ind}<{tag}>".format(ind=ind, tag=self.tag))
         for lines in self.content:
             # If type of the line is not a string, it will render
-            # with the class of object it is.
+            # with the class of object it is. It will also pass number of tabs
             if(type(lines) != str):
                 type(lines).render(lines, f, num=num)
             # If it is a string, it will write out a content with
@@ -48,43 +48,28 @@ class Element(object):
 
 
 class Html(Element):
-    def __init__(self, content=None):
-        self.tag = "html"
-        self.content = []
-        if(content is not None):
-            self.content.append(content)
+    def __init__(self):
+        super(Html, self).__init__(tag="html")
 
 
 class Body(Element):
-    def __init__(self, content=None):
-        self.tag = "body"
-        self.content = []
-        if(content is not None):
-            self.content.append(content)
+    def __init__(self):
+        super(Body, self).__init__(tag="body")
 
 
 class P(Element):
     def __init__(self, content=None):
-        self.tag = "p"
-        self.content = []
-        if(content is not None):
-            self.content.append(content)
+        super(P, self).__init__(tag="p", content=content)
 
 
 class Head(Element):
-    def __init__(self, content=None):
-        self.tag = "head"
-        self.content = []
-        if(content is not None):
-            self.content.append(content)
+    def __init__(self):
+        super(Head, self).__init__(tag="head")
 
 
 class Title(Element):
     def __init__(self, content=None):
-        self.tag = "title"
-        self.content = []
-        if(content is not None):
-            self.content.append(content)
+        super(Title, self).__init__(tag="title", content=content)
 
     def render(self, f, ind="    ", num=0):
         ind = ind * num
