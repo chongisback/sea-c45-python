@@ -221,7 +221,7 @@ if __name__ == "__main__":
     test_row_to_edge()
     test_state_edges()
     test_earlier_date()
-    # test_most_recent_poll_row()
+    test_most_recent_poll_row()
     # test_unique_column_values()
     # test_pollster_predictions()
     # test_average_error()
