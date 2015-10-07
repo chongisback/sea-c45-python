@@ -5,7 +5,6 @@ fill this in so it will pass all the tests.
 """
 import math
 
-
 class Circle(object):
     def __init__(self, r):
         self.radius = r
@@ -17,10 +16,8 @@ class Circle(object):
 
     def _set_diameter(self, value):
         self._diameter = value
-        self.raidus = value / 2
-        self.area = math.pi * self.radius ** 2
+        self._raidus = value / 2
 
     def _del_diameter(self):
         del self._diameter
-
-    diameter = property(_get_diameter, _set_diameter, _del_diameter, "diameter")
+    x = property(_get_diameter, _set_diameter, _del_diameter, doc="docstring")
