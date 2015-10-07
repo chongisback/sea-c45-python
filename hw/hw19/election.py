@@ -58,9 +58,12 @@ def most_recent_poll_row(poll_rows, pollster, state):
     most_recent = None
     for x in poll_rows:
         if(x["State"] == state and x["Pollster"] == pollster):
-            
-
-
+            if(most_recent is None):
+                most_recent = x
+            else:
+                if(earlier_date(most_recent['Date'], x['Date'])):
+                    most_recent = x
+    return most_recent
 
 ################################################################################
 # Problem 3: Pollster predictions
@@ -71,16 +74,27 @@ def unique_column_values(rows, column_name):
     Given a list of rows and the name of a column (a string),
     returns a set containing all values in that column.
     """
-    #TODO: Implement this function
-    pass
+    list_rows = set()
+    for row in rows:
+        list_rows.add(row[column_name])
+    return list_rows
 
 def pollster_predictions(poll_rows):
     """
     Given a list of *PollDataRow*s, returns *PollsterPredictions*.
     For a given pollster, uses only the most recent poll for a state.
     """
-    #TODO: Implement this function
-    pass
+    list_poll = unique_column_values(poll_rows, 'Pollster')
+    list_st = unique_column_values(poll_rows, 'State')
+    data = {}
+    for pollster in list_poll:
+        poll_state_edge = {}
+        for state in list_st:
+            a = most_recent_poll_row(poll_rows, pollster, state)
+            if a is not None:
+                poll_state_edge[state] = float(a["Dem"]) - float(a["Rep"])
+        data[pollster] = poll_state_edge
+    return data
 
 
 ################################################################################
