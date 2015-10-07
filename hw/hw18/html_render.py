@@ -39,7 +39,6 @@ class Element(object):
             # a new line, and +1 indentation and string
             else:
                 f.write("\n{ind}{text}".format(ind=t_ind, text=lines))
-        print(ind, self.tag)
         # Writes closing tag
         f.write("\n{ind}</{tag}>".format(ind=ind, tag=self.tag))
 
@@ -73,8 +72,6 @@ class Title(Element):
 
     def render(self, f, ind="    ", num=0):
         ind = ind * num
-        print(ind, self.tag)
         f.write("\n{ind}<{tag}>{text}</{tag}>".format(ind=ind,
                                                       tag=self.tag,
                                                       text=self.content[0]))
-        print(ind, self.tag)
