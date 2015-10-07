@@ -47,7 +47,6 @@ class Element(object):
             # a new line, and +1 indentation and string
             else:
                 f.write("\n{ind}{text}".format(ind=t_ind, text=lines))
-        print(ind, self.tag)
         # Writes closing tag
         f.write("\n{ind}</{tag}>".format(ind=ind, tag=self.tag))
 
@@ -81,11 +80,9 @@ class Title(Element):
 
     def render(self, f, ind="    ", num=0):
         ind = ind * num
-        print(ind, self.tag)
         f.write("\n{ind}<{tag}>{text}</{tag}>".format(ind=ind,
                                                       tag=self.tag,
                                                       text=self.content[0]))
-        print(ind, self.tag)
 
 
 class SelfClosingTag(Element):
@@ -95,9 +92,7 @@ class SelfClosingTag(Element):
 
     def render(self, f, ind="    ", num=0):
         ind = ind * num
-        print(ind, self.tag)
         f.write("\n{ind}<{tag} />".format(ind=ind, tag=self.tag))
-        print(ind, self.tag)
 
 
 class Hr(SelfClosingTag):
@@ -117,9 +112,7 @@ class A(Element):
 
     def render(self, f, ind="    ", num=0):
         ind = ind * num
-        print(ind, self.tag)
         f.write('\n{i}<{t} href="{l}">{c}</{t}>'.format(i=ind,
                                                         t=self.tag,
                                                         l=self.l,
                                                         c=self.content[0]))
-        print(ind, self.tag)
