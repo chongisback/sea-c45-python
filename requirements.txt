@@ -11,3 +11,4 @@ libsass==0.3.0
 mistune==0.5.1
 six==1.6.1
 sphinx-rtd-theme==0.1.6
+hieroglyph==0.7.1

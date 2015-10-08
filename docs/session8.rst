@@ -9,6 +9,14 @@ The tools of Pythonicity
 Last Session!
 ================
 
+* All this material is optional
+* 5 optional homeworks in canvas
+* Turn in your homework by next Wednesday (October 14)
+* You must get 85% of the points in class to pass.
+
+Today's Agenda
+================
+
 * Review Circle Testing, HTML Renderer
 * Complexity, Data Structures
 * Decorators
@@ -227,6 +235,20 @@ So in fact the definition should be updated as follows:
 
      "A decorator is a callable that takes a callable as an argument and returns a callable as a return value.""
 
+Intuitively
+----------
+
+Functions are like recipes, little programs that take
+in input (ingredients) and produce an output (food).
+
+Decorators are like recipes for changing recipes
+(meta-recipes). For example, let's say you like garlic,
+and you believe that there is no way to use too much
+garlic.
+You can have a meta-recipe which takes in a normal
+recipe, checks if there is garlic, doubles
+the amount, and then outputs a new recipe.
+
 An Example
 ----------
 
@@ -259,7 +281,7 @@ Let's try that out with a potentially expensive function:
 
     In [56]: @Memoize
        ....: def sum2x(n):
-       ....:     return sum(2 * i for i in xrange(n))
+       ....:     return sum(2 * i for i in range(n))
        ....:
 
     In [57]: sum2x(10000000)
@@ -315,7 +337,7 @@ decorator:
     In [71]: @timed_func
        ....: @Memoize
        ....: def sum2x(n):
-       ....:     return sum(2 * i for i in xrange(n))
+       ....:     return sum(2 * i for i in range(n))
     In [72]: sum2x(10000000)
     time expired: 0.997071027756
     Out[72]: 99999990000000
@@ -448,7 +470,7 @@ and iterators to be used with the ``for`` and ``in`` statements.
 
 .. code-block:: python
 
-    an_iterator.next()
+    an_iterator.__next__()
 
 Returns the next item from the container. If there are no further items,
 raises the ``StopIteration`` exception.
@@ -462,26 +484,26 @@ List as an Iterator:
 
     In [11]: list_iter = a_list.__iter__()
 
-    In [12]: list_iter.next()
+    In [12]: list_iter.__next__()
     Out[12]: 1
 
-    In [13]: list_iter.next()
+    In [13]: list_iter.__next__()
     Out[13]: 2
 
-    In [14]: list_iter.next()
+    In [14]: list_iter.__next__()
     Out[14]: 3
 
     In [15]: list_iter.next()
     --------------------------------------------------
     StopIteration     Traceback (most recent call last)
     <ipython-input-15-1a7db9b70878> in <module>()
-    ----> 1 list_iter.next()
+    ----> 1 list_iter.__next__()
     StopIteration:
 
 Making an Iterator
 -------------------
 
-A simple version of ``xrange()`` (whoo hoo!)
+A simple version of ``range()`` (whoo hoo!)
 
 .. code-block:: python
 
@@ -498,12 +520,12 @@ A simple version of ``xrange()`` (whoo hoo!)
             else:
                 raise StopIteration
 
-(demo: ``Examples/Session08/iterator_1.py``)
+(demo: ``examples/iterator_1.py``)
 
 ``iter()``
 -----------
 
-How doyou get the iterator object (the thing with the next() method) from an "iterable"?
+How doyou get the iterator object (the thing with the __next__() method) from an "iterable"?
 
 The ``iter()`` function:
 
@@ -526,7 +548,7 @@ What does ``for`` do?
 
 Now that we know the iterator protocol, we can write something like a for loop:
 
-(``Examples/Session08/my_for.py``)
+(``examples/my_for.py``)
 
 .. code-block:: python
 
@@ -566,12 +588,14 @@ For example.
 LAB / Homework
 --------------
 
-In the ``Examples/Session08`` dir, you will find: ``iterator_1.py``
+In the ``examples`` dir, you will find: ``iterator_1.py``
 
-* Extend (``iterator_1.py`` ) to be more like ``xrange()`` --
+* Extend (``iterator_1.py`` ) to be more like ``range()`` --
   add three input parameters: ``iterator_2(start, stop, step=1)``
 
-* See what happens if you break out in the middle of the loop:
+* See what happens if you break out in the middle of the loop.
+To run these, use the ``-i`` flag of ``python3`` to load the
+module and then enter interactive mode.
 
 .. code-block:: python
 
@@ -587,9 +611,9 @@ And then pick up again:
     for i in it:
         print(i)
 
-* Does ``xrange()``  behave the same?
+* Does ``range()``  behave the same?
 
-  - make yours match ``xrange()``
+  - make yours match ``range()``
 
 Generators
 ----------
@@ -670,7 +694,7 @@ Note:
     ...
      '__iter__',
     ...
-     'next',
+     '__next__',
 
 
 So the generator **is** an iterator
@@ -684,7 +708,7 @@ More about iterators and generators:
 
 http://www.learningpython.com/2009/02/23/iterators-iterables-and-generators-oh-my/
 
-``Examples/Session08/yield_example.py``
+``examples/yield_example.py``
 
 
 generator comprehension
@@ -716,7 +740,7 @@ Write a few generators:
 * Fibonacci sequence
 * Prime numbers
 
-(test code in ``Examples/Session08/test_generator.py``)
+(test code in ``examples/test_generator.py``)
 
 Descriptions:
 
@@ -1019,7 +1043,7 @@ Personal Growth Plan
 
 Attendance
 
-All homework due for final grading by Tuesday, April 14
+All homework due for final grading by Wednesday, October 14
 
 The Future
 ==========
@@ -1030,20 +1054,20 @@ Book for More In-Depth Introduction:
 
 Intermediate
 
-newcoder.io
+`Newcoder <http://newcoder.io>`
 
-Dev Accelerator
+Next Year: 401
 --------------------
 
-June
+February 29th
 
-3 code challenge questions.
+3 code challenge questions, pinned on slack channel.
 
 Main study resources:
 
 Go over class notes again.
 
-Do mock interviews with each other. Talk about code!
+Talk about code!
 
 Read up on Django basics.
 
@@ -1064,19 +1088,16 @@ How to Keep in Touch
 
 Drinks at Bravehorse after class
 
-TA for me at next Python F2
+TA for CodeFellows
 
 LinkedIn (paulpham@yahoo.com)
 
 Hacker Hour meetups on Tuesdays
 
-(Optional) Homework
+Readings
 ========
 
-Python Power
-
-More reading, etc:
-------------------
+`Automate the Boring Stuff with Python <http://www.amazon.com/gp/product/1593275994/ref=pd_lpo_sbs_dp_ss_2/192-3873851-7761951?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=lpo-top-stripe-1&pf_rd_r=1PRPRT5BW852MN34KREK&pf_rd_t=201&pf_rd_p=1944687662&pf_rd_i=1598631586>`
 
 **Iterators, generators, and containers:**
 
@@ -1094,54 +1115,6 @@ Raymond hettinger (again) talks about Pythonic code.
 A lot of it is about using iterators -- now you know what those really are.
 
 https://www.youtube.com/watch?v=OSGv2VnC0go
-
-Optional Homework
------------------
-
-Task 21: Timing Context Manager
-
-Create a context manager that will print to stdout the elapsed time taken to
-run all the code inside the context:
-
-.. code-block:: ipython
-
-    In [3]: with Timer() as t:
-       ...:     for i in range(100000):
-       ...:         i = i ** 20
-       ...:
-    this code took 0.206805 seconds
-
-**Extra Credit**: allow the ``Timer`` context manager to take a file-like
-object as an argument (the default should be sys.stdout). The results of the
-timing should be printed to the file-like object.
-
-
-.. nextslide::
-
-Task 22: ``p-wrapper`` Decorator
-
-Write a simple decorator you can apply to a function that returns a string.
-Decorating such a function should result in the original output, wrapped by an
-HTML 'p' tag:
-
-.. code-block:: ipython
-
-    In [4]: @p_wrapper
-       ...: def return_a_string(string):
-       ...:     return string
-       ...:
-
-    In [5]: return_a_string(u"this is a string")
-    Out[5]: '<p> this is a string </p>'
-
-Note that this is a **very** simple version of the very useful decorators
-provided by Web Frameworks.
-
-.. nextslide::
-
-Task 23: Generator Homework (documented above)
-
-Task 24: Iterator Homework (documented above)
 
 The End
 ========
