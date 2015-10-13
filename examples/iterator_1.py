@@ -19,7 +19,7 @@ class IterateMe1(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         self.current += 1
         if self.current < self.stop:
             return self.current
@@ -41,7 +41,7 @@ class IterateMe2(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         self.current += 1
         if self.current < self.stop:
             return self.current
